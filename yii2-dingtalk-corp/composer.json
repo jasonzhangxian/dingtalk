@@ -1,0 +1,21 @@
+{
+    "name": "jasonzhangxian/yii2-dingtalk-corp",
+    "description": "基于官方demo改写的",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","dingding","dingtalk"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "张雪冬",
+            "email": "zhangxuedong@new7.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "jasonzhangxian\\dingtalk\\": ""
+        }
+    }
+}
