@@ -1,5 +1,5 @@
 {
-    "name": "jasonzhangxian/yii2-dingtalk-corp",
+    "name": "jasonzhangxian/yii2-dingtalk",
     "description": "基于官方demo改写的",
     "type": "yii2-extension",
     "keywords": ["yii2","extension","dingding","dingtalk"],
@@ -11,11 +11,14 @@
         }
     ],
     "require": {
-        "yiisoft/yii2": "*"
+        "yiisoft/yii2": "*",
+        "nategood/httpful": "*",
+        "alexandernst/yii2-device-detect": "0.0.11"
     },
     "autoload": {
         "psr-4": {
             "jasonzhangxian\\dingtalk\\": ""
-        }
+        },
+        "classmap" : ["widgets/"]
     }
 }
