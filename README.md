@@ -1,31 +1,70 @@
 Yii2钉钉扩展
 ========
-基于官方demo改写的
+基于官方demo改写的，参考了/buptlsp/yii2-dingtalk的一些写法
+本框架提供了对钉钉API接口的常规访问，具体的API页面访问[钉钉API接口](https://open-doc.dingtalk.com/)
 
-Installation
+安装
 ------------
 
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+推荐的方式是通过composer 进行下载安装[composer](http://getcomposer.org/download/)。  
 
-Either run
+在命令行执行  
 
 ```
 php composer.phar require --prefer-dist jasonzhangxian/yii2-dingtalk-corp "*"
 ```
 
-or add
+或加入
 
 ```
 "jasonzhangxian/yii2-dingtalk-corp": "*"
 ```
 
-to the require section of your `composer.json` file.
+到你的`composer.json`文件中的require段。  
 
 
-Usage
+使用
 -----
 
-Once the extension is installed, simply use it in your code by  :
+安装了这个插件，你就需要在配置文件中加入如下的代码：  
+
 
 ```php
-<?= \jasonzhangxian\dingtalk\AutoloadExample::widget(); ?>```
+return [
+    'components' => [
+        'dingtalk' => [
+             'class' => '\jasonzhangxian\dingtalk\Dingtalk',
+             'agentid' => '', //您的应用的agentid 
+             'corpid' => '',  //您的企业corpid
+             'corpsecret' => '', //您的企业的corpsecret
+        ],
+        'dingtalksns' => [
+            'class' => '\jasonzhangxian\dingtalk\DingtalkSns',
+            'appid' => "",//扫码登录申请的appid
+            'appsecret' => "",//扫码登录申请的appsecret
+            'redirect_uri' => "",//扫码登录跳转地址
+        ],
+        // .... 
+    ],   
+];
+```
+在配置好之后：   
+```php
+$data = Yii::$app->dingtalk->run('/department/list');
+```
+
+扫码登录的实现：
+前端添加：
+```php
+echo \jasonzhangxian\dingtalk\JsSnsConfig::widget([
+    'container_id' => "login_container", //二维码容器ID，你需要在页面增加对应的html代码
+]);
+```
+后端实现：
+```php
+$code = Yii::$app->request->get('code');
+//通过临时授权码获取用户信息
+$user_info = Yii::$app->dingtalksns->getUserByCode($code);
+//根据用户信息，执行登录
+
+```

@@ -1,6 +1,6 @@
 {
-    "name": "jasonzhangxian/yii2-dingtalk",
-    "description": "基于官方demo改写的",
+    "name": "jasonzhangxian/yii2-dingtalk-corp",
+    "description": "dingtalk API for yii2 framework",
     "type": "yii2-extension",
     "keywords": ["yii2","extension","dingding","dingtalk"],
     "license": "BSD-3-Clause",
