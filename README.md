@@ -1,8 +1,16 @@
 Yii2钉钉扩展
 ========
-基于官方demo改写的，参考了[buptlsp](https://github.com/buptlsp/yii2-dingtalk)的一些写法
-本框架提供了对钉钉API接口的常规访问，具体的API页面访问[钉钉API接口](https://open-doc.dingtalk.com/)
+[![Total Downloads](https://poser.pugx.org/nategood/httpful/downloads.png)](https://packagist.org/packages/nategood/httpful)
 
+基于官方demo改写的，参考了[buptlsp](https://github.com/buptlsp/yii2-dingtalk)的一些写法
+
+本扩展提供了对钉钉API接口的常规访问，具体的API页面访问[钉钉API接口](https://open-doc.dingtalk.com/)
+
+使用了一些其他的包，[nategood/httpful](https://github.com/nategood/httpful)，[alexandernst/yii2-device-detect](https://github.com/alexandernst/yii2-device-detect)
+```
+"nategood/httpful": "*",
+"alexandernst/yii2-device-detect": "0.0.11"
+```
 安装
 ------------
 
