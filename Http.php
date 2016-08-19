@@ -13,13 +13,10 @@ Class Http
         if ($response->hasErrors())
         {
             var_dump($response);
-            exit;
         }
         if ($response->body->errcode != 0)
         {
-            echo $path;
             var_dump($response->body);
-            exit;
         }
         return $response->body;
     }
@@ -35,12 +32,10 @@ Class Http
         if ($response->hasErrors())
         {
             var_dump($response);
-            exit;
         }
         if ($response->body->errcode != 0)
         {
-            var_dump($path,$params,$data,$response->body);
-            exit;
+            var_dump($response->body);
         }
         return $response->body;
     }

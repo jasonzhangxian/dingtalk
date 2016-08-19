@@ -36,7 +36,6 @@ class DingtalkSns extends Component
         if (!$accessToken)
         {
             $response = Http::get('/sns/gettoken', array('appid' => $this->appid, 'appsecret' => $this->appsecret));
-            self::check($response);
             $accessToken = $response->access_token;
             $this->cache->set(self::DINGTALK_SNS_CACHEKEY, $accessToken, 7000);
         }
@@ -71,11 +70,4 @@ class DingtalkSns extends Component
         return $info_response;
     }
 
-    static function check($res)
-    {
-        if ($res->errcode != 0)
-        {
-            exit("Failed: " . json_encode($res));
-        }
-    }
 }

@@ -24,8 +24,6 @@ class Dingtalk extends Component
         parent::init();
 
         $this->cache = Yii::$app->cache;
-
-        //$this->cache->flush();
     }
 
     /**
@@ -37,7 +35,6 @@ class Dingtalk extends Component
         if (!$accessToken)
         {
             $response = Http::get('/gettoken', array('corpid' => $this->corpid, 'corpsecret' => $this->corpsecret));
-            self::check($response);
             $accessToken = $response->access_token;
             $this->cache->set(self::DINGTALK_CACHEKEY, $accessToken, 7000);
         }
@@ -53,11 +50,23 @@ class Dingtalk extends Component
         if (!$jsticket)
         {
             $response = Http::get('/get_jsapi_ticket', array('type' => 'jsapi', 'access_token' => $this->getAccessToken()));
-            self::check($response);
             $jsticket = $response->ticket;
             $this->cache->set(self::DINGTALK_JSAPI_CACHEKEY, $jsticket, 7000);
         }
         return $jsticket;
+    }
+
+    /**
+     * 通用查询
+     */
+    public function run($action , $params = array() , $postFields = array())
+    {
+        $params['access_token'] = $this->getAccessToken();
+        if(empty($postFields))
+            $response = Http::get($action, $params);
+        else
+            $response = Http::post($action, $params, $postFields);
+        return $response;
     }
 
     /**
@@ -122,21 +131,5 @@ class Dingtalk extends Component
         return $pageURL;
     }
 
-    public function run($action , $params = array() , $postFields = array())
-    {
-        $params['access_token'] = $this->getAccessToken();
-        if(empty($postFields))
-            $response = Http::get($action, $params);
-        else
-            $response = Http::post($action, $params, $postFields);
-        return $response;
-    }
-    static function check($res)
-    {
-        if ($res->errcode != 0)
-        {
-            exit("Failed: " . json_encode($res));
-        }
-    }
 
 }
