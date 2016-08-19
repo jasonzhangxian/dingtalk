@@ -100,7 +100,7 @@ JsApi
 echo \jasonzhangxian\dingtalk\JsapiConfig::widget([
     'jsApiList' => ["runtime.permission.requestAuthCode"], //本页面需要使用的jsapi,本例中为免登服务
     'successJs' => 'function(){ //jsapi配置好后执行的JS回调，我们可以在此处开始写执行的代码
-         dd.runtime.permission.requestAuthCode({
+         '.(!\Yii::$app->devicedetect->isMobile()?'DingTalkPC':'dd').'.runtime.permission.requestAuthCode({
              corpId: "'.\Yii::$app->dingtalk->corpid.'",
              onSuccess: function(result) {
                  $.ajax({

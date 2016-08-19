@@ -39,7 +39,7 @@ class JsapiConfig extends Widget
             $dd = "DingTalkPC";
             $js = ["http://g.alicdn.com/dingding/dingtalk-pc-api/2.5.0/index.js"];
         }
-        AssetBundle::register($view)->js = $js;;
+        array_push(AssetBundle::register($view)->js, $js);
         $js ="$dd.config(".str_replace(",",",\r\n",$this->dingtalk->getConfig($this->jsApiList)).");
         $dd.ready(".$this->successJs.");
         $dd.error(".$this->errorJs.");";

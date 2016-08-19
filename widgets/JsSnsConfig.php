@@ -30,7 +30,7 @@ class JsSnsConfig extends Widget
     {
         $view = $this->getView();
         $js = ["https://g.alicdn.com/dingding/dinglogin/0.0.2/ddLogin.js"];
-        AssetBundle::register($view)->js = $js;;
+        array_push(AssetBundle::register($view)->js, $js);
         $js ="
         var appid = '".$this->dingtalk->appid."';
         var jsapi_host = '".($this->dingtalk->protocol."://".$this->dingtalk->host)."';
