@@ -1,6 +1,6 @@
 Yii2钉钉扩展
 ========
-[![Total Downloads](https://poser.pugx.org/nategood/httpful/downloads.png)](https://packagist.org/packages/nategood/httpful)
+[![Total Downloads](https://poser.pugx.org/jasonzhangxian/yii2-dingtalk-corp/downloads.png)](https://packagist.org/packages/jasonzhangxian/yii2-dingtalk-corp)
 
 基于官方demo改写的，参考了[buptlsp](https://github.com/buptlsp/yii2-dingtalk)的一些写法
 
