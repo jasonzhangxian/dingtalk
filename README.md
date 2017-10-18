@@ -120,3 +120,35 @@ echo \jasonzhangxian\dingtalk\JsapiConfig::widget([
     //'errorJs' => 'function(){}', //错误时的JS,默认会输出错误的信息
 ]);
 ```
+
+回调
+使用了Yii2的behaviors功能，在controller里面设置：
+```php
+    public $layout = false;
+    public $enableCsrfValidation = false;
+
+    public function behaviors()
+    {
+        return [
+            'callbackbehavior' => [
+                'class' => 'jasonzhangxian\dingtalk\behaviors\CallbackBehavior',
+                '_token' => 'your token',
+                '_encodeing_aes_key' => 'your encodeing_aes_key',
+                '_suite_key' => 'your corpid',
+                'actions' => ['index']//回调入口action
+            ],
+        ];
+    }
+    
+    public function actionIndex()
+    {
+        $data = Yii::$app->request->getBodyParams();
+        
+        //用于注册回调时 返回加密后的success字符串
+        if (isset($data['EventType']) && $data['EventType'] == "check_url") {
+            echo json_encode($data['encryptMsg']);
+        }else{
+            //处理回调的逻辑代码
+        }
+    }
+```
