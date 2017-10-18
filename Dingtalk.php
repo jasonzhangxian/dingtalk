@@ -9,6 +9,7 @@ use jasonzhangxian\dingtalk\Http;
 
 class Dingtalk extends Component
 {
+
     public $corpid = "";
     public $corpsecret = "";
     public $agentid = "";
@@ -32,12 +33,12 @@ class Dingtalk extends Component
     public function getAccessToken()
     {
         $accessToken = $this->cache->get(self::DINGTALK_CACHEKEY);
-        if (!$accessToken)
-        {
+        if ( !$accessToken) {
             $response = Http::get('/gettoken', array('corpid' => $this->corpid, 'corpsecret' => $this->corpsecret));
             $accessToken = $response->access_token;
             $this->cache->set(self::DINGTALK_CACHEKEY, $accessToken, 7000);
         }
+
         return $accessToken;
     }
 
@@ -47,25 +48,28 @@ class Dingtalk extends Component
     public function getTicket()
     {
         $jsticket = $this->cache->get(self::DINGTALK_JSAPI_CACHEKEY);
-        if (!$jsticket)
-        {
-            $response = Http::get('/get_jsapi_ticket', array('type' => 'jsapi', 'access_token' => $this->getAccessToken()));
+        if ( !$jsticket) {
+            $response = Http::get('/get_jsapi_ticket',
+                array('type' => 'jsapi', 'access_token' => $this->getAccessToken()));
             $jsticket = $response->ticket;
             $this->cache->set(self::DINGTALK_JSAPI_CACHEKEY, $jsticket, 7000);
         }
+
         return $jsticket;
     }
 
     /**
      * 通用查询
      */
-    public function run($action , $params = array() , $postFields = array())
+    public function run($action, $params = array(), $postFields = array())
     {
         $params['access_token'] = $this->getAccessToken();
-        if(empty($postFields))
+        if (empty($postFields)) {
             $response = Http::get($action, $params);
-        else
+        } else {
             $response = Http::post($action, $params, $postFields);
+        }
+
         return $response;
     }
 
@@ -89,9 +93,12 @@ class Dingtalk extends Component
             'agentId' => $agentId,
             'timeStamp' => $timeStamp,
             'corpId' => $corpId,
-            'signature' => $signature);
-        if(!empty($jsApiList))
+            'signature' => $signature
+        );
+        if ( !empty($jsApiList)) {
             $config['jsApiList'] = $jsApiList;
+        }
+
         return json_encode($config, JSON_UNESCAPED_SLASHES);
     }
 
@@ -104,6 +111,7 @@ class Dingtalk extends Component
             '&noncestr=' . $nonceStr .
             '&timestamp=' . $timeStamp .
             '&url=' . $url;
+
         return sha1($plain);
     }
 
@@ -114,20 +122,17 @@ class Dingtalk extends Component
     {
         $pageURL = 'http';
 
-        if (array_key_exists('HTTPS',$_SERVER)&&$_SERVER["HTTPS"] == "on")
-        {
+        if (array_key_exists('HTTPS', $_SERVER) && $_SERVER["HTTPS"] == "on") {
             $pageURL .= "s";
         }
         $pageURL .= "://";
 
-        if ($_SERVER["SERVER_PORT"] != "80")
-        {
+        if ($_SERVER["SERVER_PORT"] != "80") {
             $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
-        }
-        else
-        {
+        } else {
             $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
         }
+
         return $pageURL;
     }
 
