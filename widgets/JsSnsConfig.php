@@ -1,6 +1,7 @@
 <?php
 namespace jasonzhangxian\dingtalk;
 
+use jasonzhangxian\dingtalk\assets\DingtalkSnsAsset;
 use \Yii;
 use yii\base\Widget;
 use yii\base\InvalidConfigException;
@@ -11,6 +12,9 @@ class JsSnsConfig extends Widget
 
     public $dingtalk = 'dingtalksns';
     public $container_id;
+    public $style = "border:none;background-color:#FFFFFF";
+    public $width = 365;
+    public $height = 400;
 
     public function init()
     {
@@ -31,8 +35,7 @@ class JsSnsConfig extends Widget
     public function run()
     {
         $view = $this->getView();
-        $js = ["https://g.alicdn.com/dingding/dinglogin/0.0.2/ddLogin.js"];
-        array_push(AssetBundle::register($view)->js, $js);
+        DingtalkSnsAsset::register($view);
         $js = "
         var appid = '" . $this->dingtalk->appid . "';
         var jsapi_host = '" . ($this->dingtalk->protocol . "://" . $this->dingtalk->host) . "';
@@ -42,16 +45,18 @@ class JsSnsConfig extends Widget
         var obj = DDLogin({
                id:'" . $this->container_id . "',
                goto: encodeURIComponent(qrconnect_url),
-               style: '',
+               style: '" . $this->style . "',
                href: '',
-               width : '200px',
-               height: '200px'
+               width : '" . $this->width . "',
+               height: '" . $this->height . "'
             });
         var hanndleMessage = function (event) {
-            var data = event.data;
             var origin = event.origin;
-            var oauth2_url = jsapi_host + '/connect/oauth2/sns_authorize?' + common_url;
-            window.location.href= oauth2_url + '&loginTmpCode=' + data;
+            if( origin == 'https://login.dingtalk.com' ) {
+                var loginTmpCode = event.data;
+                var oauth2_url = jsapi_host + '/connect/oauth2/sns_authorize?' + common_url;
+                window.location.href= oauth2_url + '&loginTmpCode=' + loginTmpCode;
+            }
         };
         if (typeof window.addEventListener != 'undefined') {
             window.addEventListener('message', hanndleMessage, false);

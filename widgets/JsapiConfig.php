@@ -1,6 +1,8 @@
 <?php
 namespace jasonzhangxian\dingtalk;
 
+use jasonzhangxian\dingtalk\assets\DingtalkAsset;
+use jasonzhangxian\dingtalk\assets\DingtalkPcAsset;
 use \Yii;
 use yii\base\Widget;
 use yii\base\InvalidConfigException;
@@ -35,13 +37,13 @@ class JsapiConfig extends Widget
     public function run()
     {
         $view = $this->getView();
-        $dd = "dd";
-        $js = ["http://g.alicdn.com/ilw/ding/0.8.9/scripts/dingtalk.js"];
         if ( !\Yii::$app->devicedetect->isMobile()) {
             $dd = "DingTalkPC";
-            $js = ["http://g.alicdn.com/dingding/dingtalk-pc-api/2.5.0/index.js"];
+            DingtalkPCAsset::register($view);
+        } else {
+            $dd = "dd";
+            DingtalkAsset::register($view);
         }
-        array_push(AssetBundle::register($view)->js, $js);
         $js = "$dd.config(" . str_replace(",", ",\r\n", $this->dingtalk->getConfig($this->jsApiList)) . ");
         $dd.ready(" . $this->successJs . ");
         $dd.error(" . $this->errorJs . ");";

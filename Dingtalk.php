@@ -35,8 +35,12 @@ class Dingtalk extends Component
         $accessToken = $this->cache->get(self::DINGTALK_CACHEKEY);
         if ( !$accessToken) {
             $response = Http::get('/gettoken', array('corpid' => $this->corpid, 'corpsecret' => $this->corpsecret));
-            $accessToken = $response->access_token;
-            $this->cache->set(self::DINGTALK_CACHEKEY, $accessToken, 7000);
+            if (isset($response->access_token)) {
+                $accessToken = $response->access_token;
+                $this->cache->set(self::DINGTALK_CACHEKEY, $accessToken, 7000);
+            } else {
+                $accessToken = 'error';
+            }
         }
 
         return $accessToken;
@@ -51,8 +55,12 @@ class Dingtalk extends Component
         if ( !$jsticket) {
             $response = Http::get('/get_jsapi_ticket',
                 array('type' => 'jsapi', 'access_token' => $this->getAccessToken()));
-            $jsticket = $response->ticket;
-            $this->cache->set(self::DINGTALK_JSAPI_CACHEKEY, $jsticket, 7000);
+            if (isset($response->ticket)) {
+                $jsticket = $response->ticket;
+                $this->cache->set(self::DINGTALK_JSAPI_CACHEKEY, $jsticket, 7000);
+            } else {
+                $jsticket = 'error';
+            }
         }
 
         return $jsticket;
